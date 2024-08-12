@@ -1,13 +1,15 @@
+//Import the libraries
 const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
 const port = 5000;
 
+//Create the endpoint
 app.get('/book', async (req,res) => {
     const pageNumber = parseInt(req.query.page, 10)
 
     if(isNaN(pageNumber) || pageNumber<0) {
-        return res.status(400).send('ERROR: Invalid Page number');
+        return res.status(400).send('ERROR: Invalid Page number'); //Validate that the PageNumber is grater that 0
     }
 
     let browser;
@@ -15,9 +17,9 @@ app.get('/book', async (req,res) => {
     try {
         browser = await puppeteer.launch();
         const page = await browser.newPage();
-        const url = `https://books.toscrape.com/catalogue/page-${pageNumber}.html`;
+        const url = `https://books.toscrape.com/catalogue/page-${pageNumber}.html`; //Initialize the urs where all the information is going to be fetched
 
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'networkidle2' });//Go to the the url mentioned above
 
         const bookLinks = await page.evaluate( () => {
             return Array.from(document.querySelectorAll('article.product_pod h3 a')).map(anchor => anchor.href)
