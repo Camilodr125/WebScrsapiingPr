@@ -4,7 +4,9 @@ const puppeteer = require('puppeteer');
 const port = 5000;
 
 app.get('/quotes', async(req,res) => {
-    pageNumber = parseInt(req.query.page, 10);
+    const pageNumber = parseInt(req.query.page, 10);
+    const tag = req.query.tag;
+
 
     if(isNaN(pageNumber) || pageNumber < 0) {
         return res.status(400).send('ERROR: Invalid page number')
@@ -19,7 +21,7 @@ app.get('/quotes', async(req,res) => {
 
         await page.goto(url, {waitUntil: 'networkidle2' })
 
-        const data = await page.evaluate(() => {
+        const data = await page.evaluate((tag) => {
             const quotes = [];
             document.querySelectorAll('.quote').forEach(item => {
                 const anchorText = item.querySelector('.text');
@@ -30,11 +32,16 @@ app.get('/quotes', async(req,res) => {
                 const tagElement = item.querySelectorAll('.tag');
                 tagElement.forEach(tag => tags.push(tag.textContent.trim()));
 
-                quotes.push({Quote: text, Author: author, Tags:tags});
+                if(tag && !tags.includes(tag))  return;
+                    quotes.push({Quote: text, Author: author, Tags:tags});
+
+                
+
+                
 
             });
             return quotes
-        });
+        }, tag);
 
         res.json(data)
     
