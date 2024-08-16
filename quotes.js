@@ -34,11 +34,6 @@ app.get('/quotes', async(req,res) => {
 
                 if(tag && !tags.includes(tag))  return;
                     quotes.push({Quote: text, Author: author, Tags:tags});
-
-                
-
-                
-
             });
             return quotes
         }, tag);
