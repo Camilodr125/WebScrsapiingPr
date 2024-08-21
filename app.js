@@ -38,11 +38,6 @@ app.get('/deshow', async (req, res) => {
 
                 
                 listings.push({ url: linkUrl, title:TitleName, price:TotalPrice, features:properties, status:state });
-                
-
-                
-                
-                
             });
             return listings;
         });
