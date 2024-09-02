@@ -13,5 +13,10 @@
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "puppeteer": "^23.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/puppeteer": "^7.0.4",
+    "typescript": "^5.5.4"
   }
 }
